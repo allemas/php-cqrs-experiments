@@ -18,12 +18,23 @@ use Deggolok\Services\OgameApi\PlayersClient;
 class GetUniverseApiPlayersHandler implements CommandHandlerInterface
 {
 
+    private function fetchApi($configurator){
+        $serviceApi = new PlayersClient();
+        return $serviceApi::fetch($configurator->getSystem("player"));
+
+    }
+
+
+
+
+
+
     public function handle(CommandInterface $command)
     {
         $configurator = $command->configurator;
-        $serviceApi = new PlayersClient();
+        $document = $this->fetchApi($configurator);
 
-        return $serviceApi::fetch($configurator->getSystem("player"));
+        return $document;
 
 
     }
