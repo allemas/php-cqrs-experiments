@@ -1,0 +1,22 @@
+{
+  "name": "allema_s/ogame_deggolok",
+  "authors": [
+    {
+      "name": "Allemand Sébastien",
+      "email": "sebastienallemand.as@gmail.com"
+    }
+  ],
+  "require": {
+    "symfony/yaml": "^4.3",
+    "symfony/filesystem": "^4.3",
+    "guzzlehttp/guzzle": "^6.3",
+    "ext-dom": "*",
+    "ext-json": "*",
+    "mongodb/mongodb": "^1.4"
+  },
+  "autoload": {
+    "psr-4": {
+      "Deggolok\\": "src/"
+    }
+  }
+}
