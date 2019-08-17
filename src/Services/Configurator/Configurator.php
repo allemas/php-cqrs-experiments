@@ -25,6 +25,7 @@ class Configurator
     public function __construct($dirname)
     {
         $this->_fileConf = Yaml::parseFile($dirname);
+
     }
 
     public function get($type)

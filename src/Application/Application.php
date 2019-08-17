@@ -13,9 +13,13 @@ namespace Deggolok\Application;
 
 use Deggolok\Bus\CommandBus;
 use Deggolok\Bus\Handler\CheckPlayersStatusHandler;
+use Deggolok\Bus\Handler\GetUniverseApiPlayersHandler;
 use Deggolok\Bus\Handler\Locator\OgameDeggolokLocator;
 use Deggolok\Command\CheckPlayersStatus;
+use Deggolok\Command\GetUniverseApiPlayers;
 use Deggolok\Domain\ValueObject\Universe;
+use Deggolok\Infrastructure\Filesystem\DeggolokFS;
+use Deggolok\Services\Configurator\Configurator;
 
 class Application
 {
@@ -33,18 +37,33 @@ class Application
     }
 
 
-    public function run()
+    private function getLocator(): OgameDeggolokLocator
     {
         $locator = new OgameDeggolokLocator();
         $locator->register('Deggolok\Command\CheckPlayersStatus', new CheckPlayersStatusHandler());
+        $locator->register('Deggolok\Command\GetUniverseApiPlayers', new GetUniverseApiPlayersHandler());
 
+        return $locator;
+    }
 
+    public function run()
+    {
+        $bus = new CommandBus($this->getLocator());
 
+        $fs = new DeggolokFS($this->confDir);
+        foreach ($fs->getConfigFiles() as $file) {
 
+            $configurator = new Configurator($file);
+            var_dump($bus->handle(new GetUniverseApiPlayers($configurator)));
 
-        $bus = new CommandBus($locator);
+        }
+        /*
 
-       var_dump($bus->handle(new CheckPlayersStatus(new Universe("spica"))));
+                $configurator = new Configurator($this->confDir);
+                var_dump($bus->handle(new GetUniverseApiPlayers($configurator)));
+        */
+
+        var_dump($bus->handle(new CheckPlayersStatus(new Universe("spica"))));
 
 
     }

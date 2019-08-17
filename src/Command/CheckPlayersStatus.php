@@ -11,12 +11,10 @@
 
 namespace Deggolok\Command;
 
-
 use Deggolok\Domain\ValueObject\Universe;
 
 class CheckPlayersStatus implements CommandInterface
 {
-    use ClassDetectorTrait;
 
     public $universe;
 
