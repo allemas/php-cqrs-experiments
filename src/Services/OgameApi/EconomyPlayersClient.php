@@ -1,7 +1,7 @@
 <?php
 
 /*
- * PlayersClient.php is part of ogame_deggolok.
+ * EconomyPlayersClient.php is part of ogame_deggolok.
  *
  * (c) Allemand Sébastien <sebastien.a.consulting@gmail.com>
  *
@@ -14,9 +14,8 @@ namespace Deggolok\Services\OgameApi;
 
 use GuzzleHttp\Client;
 
-final class PlayersClient implements OgameApiInterface
+class EconomyPlayersClient
 {
-
     public static function fetch(string $uri): \DOMDocument
     {
         $client = new Client();
@@ -25,7 +24,4 @@ final class PlayersClient implements OgameApiInterface
         $doc = \DOMDocument::loadXML($res->getBody()->getContents());
         return $doc;
     }
-
-
-
 }

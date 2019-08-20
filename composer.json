@@ -12,11 +12,22 @@
     "guzzlehttp/guzzle": "^6.3",
     "ext-dom": "*",
     "ext-json": "*",
-    "mongodb/mongodb": "^1.4"
+    "mongodb/mongodb": "^1.4",
+    "doctrine/mongodb-odm-bundle": "^3.5",
+    "doctrine/mongodb-odm": "^1.2",
+    "alcaeus/mongo-php-adapter": "^1.1"
   },
   "autoload": {
     "psr-4": {
       "Deggolok\\": "src/"
+    }
+  },
+  "provide": {
+    "ext-mongo": "*"
+  },
+  "config": {
+    "platform": {
+      "ext-mongo": "1.6.16"
     }
   }
 }

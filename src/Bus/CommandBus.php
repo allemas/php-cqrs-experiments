@@ -34,22 +34,15 @@ class CommandBus implements CommandBusInterface
     public function handle(CommandInterface $command)
     {
         $this->queue[] = $command;
-        if ($this->executing) {
-            return array();
-        }
-
-        $first = true;
-        $aggregateRoots = array();
 
         while ($command = array_shift($this->queue)) {
-            $aggregateRoots[] = $this->invokeHandler($command, $first);
-            $first = false;
+            $handle = $this->invokeHandler($command);
         }
-        return $aggregateRoots;
+        return $handle;
     }
 
 
-    protected function invokeHandler(CommandInterface $command, $first)
+    protected function invokeHandler(CommandInterface $command)
     {
         $aggregateRoot = null;
         try {

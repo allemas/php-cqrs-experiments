@@ -29,9 +29,6 @@ class PlayerAPI
     public function fetch()
     {
 
-
-
-
         $collection = (new \MongoDB\Client('mongodb://127.0.0.1'))->watson_spica->players;
         $changed = [];
         foreach ($doc->firstChild->childNodes as $t) {
