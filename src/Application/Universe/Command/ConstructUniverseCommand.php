@@ -1,7 +1,7 @@
 <?php
 
 /*
- * GetUniverseApiPlayers.php is part of ogame_deggolok.
+ * ConstructUniverseCommand.php is part of ogame_deggolok.
  *
  * (c) Allemand Sébastien <sebastien.a.consulting@gmail.com>
  *
@@ -9,22 +9,18 @@
  * file that was distributed with this source code.
  */
 
-namespace Deggolok\Command;
+namespace Deggolok\Application\Universe\Command;
 
 
+use Deggolok\Command\CommandInterface;
 use Deggolok\Services\Configurator\Configurator;
 
-class GetUniverseApiPlayers implements CommandInterface
+class ConstructUniverseCommand implements CommandInterface
 {
-    public $configurator;
+    public $name;
 
-    /**
-     * GetUniverseApiPlayers constructor.
-     * @param Configurator $configurator
-     */
     public function __construct(Configurator $configurator)
     {
-        $this->configurator = $configurator;
+        $this->name = $configurator->getSystem("universe");
     }
-
 }

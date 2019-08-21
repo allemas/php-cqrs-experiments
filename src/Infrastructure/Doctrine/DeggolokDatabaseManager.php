@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Deggolok\Infrastructure\Repository;
+namespace Deggolok\Infrastructure\Doctrine;
 
 
 use Doctrine\MongoDB\Connection;
@@ -19,13 +19,13 @@ use Doctrine\ODM\MongoDB\Mapping\Driver\AnnotationDriver;
 
 class DeggolokDatabaseManager
 {
-    public static function getManager()
+    protected function getManager()
     {
         $connection = new Connection();
         $config = new Configuration();
-        $config->setProxyDir(__DIR__ . '/proxy');
+        $config->setProxyDir(__DIR__ . '/cache/proxy');
         $config->setProxyNamespace('Proxies');
-        $config->setHydratorDir(__DIR__ . '/hydrator');
+        $config->setHydratorDir(__DIR__ . '/cache/hydrator');
         $config->setHydratorNamespace('Hydrators');
         $config->setDefaultDB('doctrine_odm');
 

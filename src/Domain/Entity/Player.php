@@ -1,7 +1,7 @@
 <?php
 
 /*
- * PlayerState.php is part of ogame_deggolok.
+ * Player.php is part of ogame_deggolok.
  *
  * (c) Allemand Sébastien <sebastien.a.consulting@gmail.com>
  *
@@ -12,20 +12,22 @@
 namespace Deggolok\Domain\Entity;
 
 
-class PlayerState
+class Player
 {
-
     private $id;
     private $name;
     private $status;
     private $aliance;
+    private $universe;
 
-    public function __construct($id, $name, $status = 'actif', $aliance = null)
+    public function __construct($id, $name, $status = 'actif', $aliance = null, $uni)
     {
         $this->id = $id;
         $this->name = $name;
         $this->status = $status;
         $this->aliance = $aliance;
+        $this->univer = $uni;
+
     }
 
     public function getId()
@@ -56,7 +58,6 @@ class PlayerState
             'status' => $this->status,
             'aliance' => $this->aliance
         ));
-
     }
 
     final public function __toArray()
@@ -68,5 +69,4 @@ class PlayerState
             'aliance' => $this->aliance
         );
     }
-
 }

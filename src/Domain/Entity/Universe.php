@@ -9,17 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace Deggolok\Domain\ValueObject;
-
+namespace Deggolok\Domain\Entity;
 
 class Universe
 {
     public $name;
-    public $players;
+    public $players = array();
 
-
-
-    public function __construct($name)
+    public function __construct(string $name)
     {
         $this->name = $name;
     }

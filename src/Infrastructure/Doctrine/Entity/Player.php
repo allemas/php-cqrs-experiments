@@ -9,23 +9,29 @@
  * file that was distributed with this source code.
  */
 
-namespace Deggolok\Infrastructure\Repository;
+namespace Deggolok\Infrastructure\Doctrine\Entity;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
 /** @ODM\Document() */
-class PlayerRepository
+class Player
 {
-    /** @ODM\Id */
+    /** @ODM\Id() */
     private $id;
 
     /** @ODM\Field(type="string") */
     private $name;
 
+    /** @ODM\Field(type="string") */
+    private $ogameId;
+
+    public function __construct($ogameId)
+    {
+        $this->ogameId = $ogameId;
+    }
+
     public function setName($name)
     {
         $this->name = $name;
     }
-
-
 }

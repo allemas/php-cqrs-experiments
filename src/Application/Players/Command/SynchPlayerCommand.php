@@ -1,7 +1,7 @@
 <?php
 
 /*
- * CheckPlayerStatus.php is part of ogame_deggolok.
+ * SynchPlayerCommand.php is part of ogame_deggolok.
  *
  * (c) Allemand Sébastien <sebastien.a.consulting@gmail.com>
  *
@@ -9,22 +9,24 @@
  * file that was distributed with this source code.
  */
 
-namespace Deggolok\Command;
+namespace Deggolok\Application\Players\Command;
 
-use Deggolok\Domain\ValueObject\Universe;
+
+use Deggolok\Command\CommandInterface;
 use Deggolok\Services\Configurator\Configurator;
 
-/**
- * Class ConstructUniverse
- * @package Deggolok\Command
- */
-class ConstructUniverse implements CommandInterface
+class SynchPlayerCommand implements CommandInterface
 {
+
     /**
      * @var Configurator
      */
     public $configurator;
 
+    /**
+     * SynchPlayerCommand constructor.
+     * @param $configurator
+     */
     public function __construct($configurator)
     {
         $this->configurator = $configurator;

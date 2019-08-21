@@ -12,8 +12,6 @@
 namespace Deggolok\Services\Parsers;
 
 
-use Deggolok\Domain\ValueObject\Player;
-
 class Players
 {
     public static function parseList(\DOMDocument $players): array
@@ -25,7 +23,11 @@ class Players
             $status = @$player->attributes->getNamedItem("status")->nodeValue;
             $aliance = @$player->attributes->getNamedItem("aliance")->nodeValue;
 
-            $data[] = new Player($id, $name, $status, $aliance);
+            $data[$id] = [
+                "name" => $name,
+                "status" => $status,
+                "aliance" => $aliance
+            ];
         }
 
         return $data;
