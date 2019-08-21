@@ -11,10 +11,8 @@
 
 namespace Deggolok\Infrastructure\Doctrine;
 
-
-use Deggolok\Domain\Entity\Player;
-use Deggolok\Domain\Entity\PlayerRepositoryInterface;
-
+use Deggolok\Application\Domain\Player\Entity\Player;
+use Deggolok\Application\Domain\Player\Entity\PlayerRepositoryInterface;
 
 /**
  * Class PlayerRepository
@@ -25,13 +23,17 @@ class PlayerRepository extends DeggolokDatabaseManager implements PlayerReposito
     /**
      * @param Player $player
      */
-    public function create(Player $player)
+    public function create(Player $player, array $options)
     {
         $em = $this->getManager();
         $p = new \Deggolok\Infrastructure\Doctrine\Entity\Player($player->getId());
+        if ($options["label_universe"]) {
+            $p->label_universe = $options["label_universe"];
+        }
 
         $em->persist($p);
         $em->flush();
+
 
     }
 

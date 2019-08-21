@@ -11,24 +11,19 @@
 
 namespace Deggolok\Application;
 
-use Deggolok\Application\Players\Command\SynchPlayerCommand;
-use Deggolok\Application\Players\Command\SynchPlayerCommandHandler;
-use Deggolok\Application\Universe\Command\ConstructUniverseCommand;
-use Deggolok\Application\Universe\Command\ConstructUniverseCommandHandler;
-use Deggolok\Bus\CommandBus;
-use Deggolok\Bus\Handler\ConstructUniverseHandler;
-use Deggolok\Bus\Handler\Locator\OgameDeggolokLocator;
-use Deggolok\Command\ConstructUniverse;
-use Deggolok\Infrastructure\Doctrine\PlayerRepository;
-use Deggolok\Infrastructure\Doctrine\UniverseRepository;
-use Deggolok\Infrastructure\Filesystem\DeggolokFS;
-use Deggolok\Services\Configurator\Configurator;
 
+use Deggolok\Application\Domain\Player\Command\SynchPlayerCommand;
+use Deggolok\Application\Domain\Player\Command\SynchPlayerCommandHandler;
+use Deggolok\Application\Service\Configurator\ConfiguratorFactory;
+use Deggolok\Bus\Command\CommandBus;
+
+use Deggolok\Infrastructure\Doctrine\PlayerRepository;
 
 class Application
 {
-    private $confDir;
-    private $bus;
+    private $configurators;
+    private $commandBus;
+    private $queryBus;
 
     /**
      * Application constructor.
@@ -36,30 +31,22 @@ class Application
      */
     public function __construct(array $options)
     {
-        if (!empty($options['confDir'])) {
-            $this->confDir = $options['confDir'];
-        }
-
-        $locator = new OgameDeggolokLocator();
-        $locator->register(ConstructUniverseCommand::class, new ConstructUniverseCommandHandler(new UniverseRepository()));
-        $locator->register(SynchPlayerCommand::class, new SynchPlayerCommandHandler(new PlayerRepository()));
-
-        $this->bus = new CommandBus($locator);
+        $this->configurators = ConfiguratorFactory::createFromDir($options["configuration_directory"]);
+        $this->commandBus = new CommandBus();
+        $this->register();
     }
 
-    private function synchNewUniverse()
+    private function register()
     {
-        $fs = new DeggolokFS($this->confDir);
-        foreach ($fs->getConfigFiles() as $file) {
-            $configurator = new Configurator($file);
-          //  $this->bus->handle(new ConstructUniverseCommand($configurator));
-            $this->bus->handle(new SynchPlayerCommand($configurator));
-        }
+        $this->commandBus->register(SynchPlayerCommand::class, new SynchPlayerCommandHandler(
+            $this->configurators, new PlayerRepository()));
     }
 
     public function run()
     {
-        $this->synchNewUniverse();
+        $this->commandBus->handle(new SynchPlayerCommand());
+
 
     }
+
 }

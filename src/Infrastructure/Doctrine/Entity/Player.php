@@ -25,6 +25,9 @@ class Player
     /** @ODM\Field(type="string") */
     private $ogameId;
 
+    /** @ODM\Field(type="string") */
+    public $label_universe;
+
     public function __construct($ogameId)
     {
         $this->ogameId = $ogameId;
