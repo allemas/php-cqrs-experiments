@@ -16,6 +16,11 @@ use Deggolok\Domain\Entity\Player;
 use Deggolok\Domain\Entity\Universe as DomainUniverse;
 use Deggolok\Domain\Entity\UniverseRepositoryInterface;
 
+
+/**
+ * Class UniverseRepository
+ * @package Deggolok\Infrastructure\Doctrine
+ */
 class UniverseRepository extends DeggolokDatabaseManager implements UniverseRepositoryInterface
 {
 

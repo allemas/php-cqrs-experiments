@@ -17,6 +17,10 @@ use Doctrine\ODM\MongoDB\Configuration;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\Mapping\Driver\AnnotationDriver;
 
+/**
+ * Class DeggolokDatabaseManager
+ * @package Deggolok\Infrastructure\Doctrine
+ */
 class DeggolokDatabaseManager
 {
     protected function getManager()

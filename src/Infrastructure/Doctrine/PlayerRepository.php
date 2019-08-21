@@ -15,9 +15,16 @@ namespace Deggolok\Infrastructure\Doctrine;
 use Deggolok\Domain\Entity\Player;
 use Deggolok\Domain\Entity\PlayerRepositoryInterface;
 
+
+/**
+ * Class PlayerRepository
+ * @package Deggolok\Infrastructure\Doctrine
+ */
 class PlayerRepository extends DeggolokDatabaseManager implements PlayerRepositoryInterface
 {
-
+    /**
+     * @param Player $player
+     */
     public function create(Player $player)
     {
         $em = $this->getManager();
@@ -28,6 +35,10 @@ class PlayerRepository extends DeggolokDatabaseManager implements PlayerReposito
 
     }
 
+    /**
+     * @param $id
+     * @return object|null
+     */
     public function findByOgameId($id)
     {
         $em = $this->getManager();
