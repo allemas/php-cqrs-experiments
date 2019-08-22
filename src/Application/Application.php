@@ -14,6 +14,8 @@ namespace Deggolok\Application;
 
 use Deggolok\Application\Domain\Player\Command\SynchPlayerCommand;
 use Deggolok\Application\Domain\Player\Command\SynchPlayerCommandHandler;
+use Deggolok\Application\Domain\Player\Command\UpdateStatusCommand;
+use Deggolok\Application\Domain\Player\Command\UpdateStatusCommandHandler;
 use Deggolok\Application\Service\Configurator\ConfiguratorFactory;
 use Deggolok\Bus\Command\CommandBus;
 
@@ -40,11 +42,14 @@ class Application
     {
         $this->commandBus->register(SynchPlayerCommand::class, new SynchPlayerCommandHandler(
             $this->configurators, new PlayerRepository()));
+        $this->commandBus->register(UpdateStatusCommand::class, new UpdateStatusCommandHandler(
+            $this->configurators, new PlayerRepository()));
     }
 
     public function run()
     {
         $this->commandBus->handle(new SynchPlayerCommand());
+        $this->commandBus->handle(new UpdateStatusCommand());
 
 
     }

@@ -12,20 +12,18 @@
 namespace Deggolok\Application\Domain\Player\Entity;
 
 
+use Deggolok\Application\Domain\Player\ValueObject\Name;
+
 class Player
 {
     private $id;
-    private $name;
+    private $name = array();
     private $status;
     private $aliance;
 
-    public function __construct($id, $name, $status = 'actif', $aliance = null)
+    public function __construct($id)
     {
         $this->id = $id;
-        $this->name = $name;
-        $this->status = $status;
-        $this->aliance = $aliance;
-
     }
 
     public function getId()
@@ -33,14 +31,35 @@ class Player
         return $this->id;
     }
 
+    /**
+     * Return Active name
+     */
     public function getName()
     {
-        return $this->name;
+        return array_values(array_slice($this->name, -1))[0];
     }
 
-    public function getStatus(): string
+    public function setNames(array $names)
+    {
+        $this->name = $names;
+    }
+
+
+
+
+    public function setStatus($status)
+    {
+        $this->status = $status;
+    }
+
+    public function getStatus()
     {
         return $this->status;
+    }
+
+    public function setAliance($aliance)
+    {
+        $this->aliance = $aliance;
     }
 
     public function getAliance()
@@ -67,4 +86,6 @@ class Player
             'aliance' => $this->aliance
         );
     }
+
+
 }

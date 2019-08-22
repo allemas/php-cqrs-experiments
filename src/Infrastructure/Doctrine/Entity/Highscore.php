@@ -12,7 +12,14 @@
 namespace Deggolok\Infrastructure\Doctrine\Entity;
 
 
+use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
+
+/** @ODM\Document() */
 class Highscore
 {
+    /** @ODM\Id() */
+    private $id;
 
+    /** @ODM\Field(type="integer") */
+    public $total;
 }

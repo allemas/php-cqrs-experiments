@@ -16,6 +16,6 @@ interface PlayerRepositoryInterface
 {
     public function create(Player $player, array $options);
 
-    public function findByOgameId($id);
+    public function findByOgameId($id, $universe);
 
 }

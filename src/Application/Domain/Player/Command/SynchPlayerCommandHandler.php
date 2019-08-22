@@ -46,13 +46,14 @@ class SynchPlayerCommandHandler implements CommandHandlerInterface
             $apiPlayer = PlayerParser::parseList(PlayerClient::fetch($configurator->getSystem("player")));
 
             foreach ($apiPlayer as $key => $player) {
-                $player = $this->repository->findByOgameId($key);
-                if (!$player) {
-                    $player = new Player($key, $player["name"]);
-
-                    $this->repository->create($player, ["label_universe" => $configurator->getSystem("universe")]);
-
+                $player_tech = $this->repository->findByOgameId($key, $configurator->getSystem("universe"));
+                if (!$player_tech) {
+                    $newPlayer = new Player($key, $player["name"]);
+                    $newPlayer->setStatus($player["status"]);
+                    $this->repository->create($newPlayer, ["label_universe" => $configurator->getSystem("universe")]);
+                    print "NEW USER";
                 }
+
             }
 
 

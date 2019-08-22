@@ -12,7 +12,26 @@
 namespace Deggolok\Infrastructure\Doctrine\Entity;
 
 
+use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
+
+/** @ODM\Document() */
 class Name
 {
+    /** @ODM\Id() */
+    private $id;
+
+    /** @ODM\Field(type="string") */
+    public $name;
+
+    public function __construct($name)
+    {
+        $this->name = $name;
+    }
+
+
+    public function __toString()
+    {
+        return $this->name;
+}
 
 }

@@ -13,6 +13,9 @@ namespace Deggolok\Infrastructure\Doctrine;
 
 use Deggolok\Application\Domain\Player\Entity\Player;
 use Deggolok\Application\Domain\Player\Entity\PlayerRepositoryInterface;
+use Deggolok\Infrastructure\Doctrine\Entity\Highscore;
+use Deggolok\Infrastructure\Doctrine\Entity\Name;
+use Deggolok\Infrastructure\Doctrine\Entity\PlayerViewModel;
 
 /**
  * Class PlayerRepository
@@ -20,6 +23,9 @@ use Deggolok\Application\Domain\Player\Entity\PlayerRepositoryInterface;
  */
 class PlayerRepository extends DeggolokDatabaseManager implements PlayerRepositoryInterface
 {
+    const LABEL_UNIVERSE = "label_universe";
+
+
     /**
      * @param Player $player
      */
@@ -27,6 +33,13 @@ class PlayerRepository extends DeggolokDatabaseManager implements PlayerReposito
     {
         $em = $this->getManager();
         $p = new \Deggolok\Infrastructure\Doctrine\Entity\Player($player->getId());
+
+        $p->setName(new Name($player->getName()));
+        $p->status = $player->getStatus();
+        $p->highscore = [
+            new Highscore()
+        ];
+
         if ($options["label_universe"]) {
             $p->label_universe = $options["label_universe"];
         }
@@ -37,19 +50,19 @@ class PlayerRepository extends DeggolokDatabaseManager implements PlayerReposito
 
     }
 
-    /**
-     * @param $id
-     * @return object|null
-     */
-    public function findByOgameId($id)
+    public function findByOgameId($id, $universe)
     {
         $em = $this->getManager();
-        $universeEntity = $em->getRepository(\Deggolok\Infrastructure\Doctrine\Entity\Player::class)
-            ->findOneBy(["ogameId" => $id]);
+        $universeEntity = null;
+        if ($universe != "") {
 
-        if ($universeEntity != null) {
-            return $universeEntity;
+            $doctrinePlayer = $em->getRepository(\Deggolok\Infrastructure\Doctrine\Entity\Player::class)
+                ->findOneBy(["ogameId" => $id, 'label_universe' => $universe]);
+            return PlayerViewModel::withValues($doctrinePlayer);
+
         }
-
+        return null;
     }
+
+
 }

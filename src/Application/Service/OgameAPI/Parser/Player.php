@@ -14,13 +14,43 @@ namespace Deggolok\Application\Service\OgameAPI\Parser;
 
 class Player
 {
-    public static function parseList(\DOMDocument $players): array
+
+    private static function understandStatus($status)
+    {
+        $status = str_split($status);
+        $states = "";
+        foreach ($status as $state) {
+            switch ($state) {
+                case "v":
+                    $states .= "mode vacance ";
+                    break;
+                case "I":
+                    $states .= "inactif ";
+                    break;
+                case "i":
+                    $states .= "inactif ";
+                    break;
+                case "b":
+                    $states .= "bloqué ";
+                    break;
+                default:
+                    $states .= "actif";
+                    break;
+
+            }
+        }
+        return $states;
+    }
+
+
+    public
+    static function parseList(\DOMDocument $players): array
     {
         $data = array();
         foreach ($players->firstChild->childNodes as $player) {
             $id = $player->attributes->getNamedItem("id")->nodeValue;
             $name = $player->attributes->getNamedItem("name")->nodeValue;
-            $status = @$player->attributes->getNamedItem("status")->nodeValue;
+            $status = self::understandStatus(@$player->attributes->getNamedItem("status")->nodeValue);
             $aliance = @$player->attributes->getNamedItem("aliance")->nodeValue;
 
             $data[$id] = [

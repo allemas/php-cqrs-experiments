@@ -19,22 +19,106 @@ class Player
     /** @ODM\Id() */
     private $id;
 
-    /** @ODM\Field(type="string") */
-    private $name;
+    /** @ODM\ReferenceMany(targetDocument="Name", cascade="all") */
+    private $name = array();
 
-    /** @ODM\Field(type="string") */
+    /** @ODM\Field(type="integer") */
     private $ogameId;
 
     /** @ODM\Field(type="string") */
     public $label_universe;
 
+    /** @ODM\Field(type="string") */
+    public $status;
+
+    /** @ODM\ReferenceMany(targetDocument="Highscore", cascade="all") */
+    public $highscore = array();
+
     public function __construct($ogameId)
+    {
+        $this->ogameId = $ogameId;
+        $this->highscore = array();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getNames()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param mixed $name
+     */
+    public function setName($name): void
+    {
+        $this->name = $name;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getOgameId()
+    {
+        return $this->ogameId;
+    }
+
+    /**
+     * @param mixed $ogameId
+     */
+    public function setOgameId($ogameId): void
     {
         $this->ogameId = $ogameId;
     }
 
-    public function setName($name)
+    /**
+     * @return mixed
+     */
+    public function getLabelUniverse()
     {
-        $this->name = $name;
+        return $this->label_universe;
     }
+
+    /**
+     * @param mixed $label_universe
+     */
+    public function setLabelUniverse($label_universe): void
+    {
+        $this->label_universe = $label_universe;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    /**
+     * @param mixed $status
+     */
+    public function setStatus($status): void
+    {
+        $this->status = $status;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getHighscore()
+    {
+        return $this->highscore;
+    }
+
+    /**
+     * @param mixed $highscore
+     */
+    public function setHighscore($highscore): void
+    {
+        $this->highscore = $highscore;
+    }
+
+
 }
