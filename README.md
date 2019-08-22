@@ -1,7 +1,8 @@
 # Deggolok Ogame
+Deggolok est un daemon capable de comprendre l'évolution des status et des score des joueurs OGameFR. 
 
-Deggolok est un demon qui récupère l'etat d'un univers ogame et exécute plusieurs commandes.
 
+_L'objectif de ce projet est d'approcher les contraintes d'architecture CQS/CQRS et de DomainDrivenDesign._
 
 ## UsesCases
 - Status des joueurs : Pour les joueurs nouvellement actif / inactif
@@ -10,25 +11,23 @@ Deggolok est un demon qui récupère l'etat d'un univers ogame et exécute plusi
 
 [Based on Ogame API](https://board.origin.ogame.gameforge.com/index.php/Thread/3927-OGame-API/)
 
-## Entity 
-- Universe
+## Entity
 - Players
-
+   - Names : Peuvent changer et doivent être historisés
+   - Score : Evolution des scores
+   - Status: status du joueur
 
  ## Concepts
- - phase 1 #CQRS PHP native Command/Bus (no magic kafka here)
- - 
- - Domain segregation : VA / Entity 
- - Services : Infrastructure (WS) isolation 
- - Mongodb collections concepts
-  
-  
-  
-  
-  
-  
-  
-  
+ - Command/query bus 
+ - Command/Query handler
+ - Domain Segregation 
+ - Services : Appels aux couches infrastructure découplé du domaine et des handlers.
+ - Eventsourcing : Pas encore fait
+ 
+ ## Technical 
+ - Fromscratch Application 
+ - Mongodb ORM 
+ 
  ## Ressources 
  - [BusCommand](https://matthiasnoback.nl/2015/01/responsibilities-of-the-command-bus/) 
  - [CQRS Blog PHP](https://github.com/skremiec/hexagonal-architecture-cqrs-example) 
