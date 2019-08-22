@@ -1,8 +1,8 @@
+_L'objectif de ce projet est d'approcher les contraintes d'architecture CQS/CQRS et de DomainDrivenDesign._
+
+
 # Deggolok Ogame
 Deggolok est un daemon capable de comprendre l'évolution des status et des score des joueurs OGameFR. 
-
-
-_L'objectif de ce projet est d'approcher les contraintes d'architecture CQS/CQRS et de DomainDrivenDesign._
 
 ## UsesCases
 - Status des joueurs : Pour les joueurs nouvellement actif / inactif
