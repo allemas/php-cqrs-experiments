@@ -13,11 +13,14 @@ namespace Deggolok\Application\Domain\Player\Command;
 
 use Deggolok\Application\Domain\Player\Entity\Player;
 use Deggolok\Application\Domain\Player\Entity\PlayerRepositoryInterface;
+use Deggolok\Application\Domain\Player\Event\NewPlayer;
+use Deggolok\Application\Domain\Player\ValueObject\Name;
 use Deggolok\Application\Service\Configurator\Configurator;
 use Deggolok\Application\Service\OgameAPI\PlayerClient;
 use Deggolok\Bus\Command\CommandHandlerInterface;
 use Deggolok\Bus\Command\CommandInterface;
 use \Deggolok\Application\Service\OgameAPI\Parser\Player as PlayerParser;
+use Deggolok\Bus\Command\CommandResponse;
 
 class SynchPlayerCommandHandler implements CommandHandlerInterface
 {
@@ -30,34 +33,38 @@ class SynchPlayerCommandHandler implements CommandHandlerInterface
      */
     private $configurators = array();
 
-    public function __construct(array $configurators, PlayerRepositoryInterface $repository)
+    public function __construct(PlayerRepositoryInterface $repository)
     {
-        $this->configurators = $configurators;
         $this->repository = $repository;
     }
 
     /**
      * @param CommandInterface $command
+     * @return CommandResponse
      */
-    public function handle(CommandInterface $command)
+    public function handle(CommandInterface $command): CommandResponse
     {
-        foreach ($this->configurators as $configurator) {
 
-            $apiPlayer = PlayerParser::parseList(PlayerClient::fetch($configurator->getSystem("player")));
+        $newPlayers = array();
 
-            foreach ($apiPlayer as $key => $player) {
-                $player_tech = $this->repository->findByOgameId($key, $configurator->getSystem("universe"));
-                if (!$player_tech) {
-                    $newPlayer = new Player($key, $player["name"]);
-                    $newPlayer->setStatus($player["status"]);
-                    $this->repository->create($newPlayer, ["label_universe" => $configurator->getSystem("universe")]);
-                    print "NEW USER";
-                }
-
+        foreach ($command->getPlayers() as $ogameId => $player) {
+            $agregat = $this->repository->findByOgameId($ogameId, $command->getUniverse());
+            if (!$agregat) {
+                $newPlayers[] = $player;
+                $this->repository->create(Player::withValue($player), ["label_universe" => $command->getUniverse()]);
             }
-
 
         }
 
+        if (count($newPlayers) > 0) {
+            return CommandResponse::withValue(true, NewPlayer::withValues($newPlayers));
+        }
+        return CommandResponse::withValue(true);
+
+    }
+
+    public function listenTo()
+    {
+        return SynchPlayerCommand::class;
     }
 }

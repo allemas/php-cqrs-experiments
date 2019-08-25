@@ -51,9 +51,9 @@ class Player
     /**
      * @param mixed $name
      */
-    public function setName($name): void
+    public function addName($name): void
     {
-        $this->name = $name;
+        $this->name[] = $name;
     }
 
     /**

@@ -12,6 +12,8 @@
 namespace Deggolok\Bus\Command;
 
 
+use Symfony\Component\Debug\Tests\Fixtures\LoggerThatSetAnErrorHandler;
+
 /**
  * Class CommandBus
  * @package Deggolok\Bus\Command
@@ -24,14 +26,29 @@ class CommandBus implements CommandBusInterface
     private $handlers = array();
 
 
+    public function __construct(iterable $handlers)
+    {
+        foreach ($handlers as $handler) {
+            $this->handlers[$handler->listenTo()] = $handler;
+        }
+    }
+
+
     public function handle(CommandInterface $command)
     {
         $aggregateRoot = null;
 
-        $commandHandler = $this->getHandler($command);
-        $aggregateRoot = $commandHandler->handle($command);
+        $commandHandler = $this->handlers[get_class($command)];
 
-        return $aggregateRoot;
+        $commandResponse = $commandHandler->handle($command);
+
+        /**
+         * Exemple
+         * $logerMiddleware = new Mid($commandHandler, new Mid2());
+         */
+
+
+        return $commandResponse;
 
     }
 

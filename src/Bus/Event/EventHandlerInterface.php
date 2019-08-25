@@ -1,7 +1,7 @@
 <?php
 
 /*
- * QueryHandlerInterface.php is part of ogame_deggolok.
+ * EventHandlerInterface.php is part of ogame_deggolok.
  *
  * (c) Allemand Sébastien <sebastien.a.consulting@gmail.com>
  *
@@ -9,12 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Deggolok\Bus\Query;
+namespace Deggolok\Bus\Event;
 
 
-interface QueryHandlerInterface
+interface EventHandlerInterface
 {
-
-    public function handle(QueryInterface $command);
-
+    public function handle(EventInterface $event);
 }

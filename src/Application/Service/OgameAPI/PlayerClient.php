@@ -21,7 +21,7 @@ class PlayerClient
         $client = new Client();
         $res = $client->request("GET", $uri);
 
-        $doc = \DOMDocument::loadXML($res->getBody()->getContents());
+        $doc = @\DOMDocument::loadXML($res->getBody()->getContents());
         return $doc;
     }
 }

@@ -12,13 +12,17 @@
 namespace Deggolok\Application;
 
 
+use Deggolok\Application\Bus\DeggolokCommandBusFactory;
+use Deggolok\Application\Bus\DeggolokQueryBusFactory;
 use Deggolok\Application\Domain\Player\Command\SynchPlayerCommand;
 use Deggolok\Application\Domain\Player\Command\SynchPlayerCommandHandler;
-use Deggolok\Application\Domain\Player\Command\UpdateStatusCommand;
-use Deggolok\Application\Domain\Player\Command\UpdateStatusCommandHandler;
-use Deggolok\Application\Service\Configurator\ConfiguratorFactory;
-use Deggolok\Bus\Command\CommandBus;
+use Deggolok\Application\Domain\Player\Command\UpdatePlayerStatusCommand;
 
+use Deggolok\Application\Domain\Player\Query\playersStateApiQuery;
+use Deggolok\Application\Service\Configurator\ConfiguratorFactory;
+
+use Deggolok\Bus\Event\EventBus;
+use Deggolok\Bus\Query\QueryBus;
 use Deggolok\Infrastructure\Doctrine\PlayerRepository;
 
 class Application
@@ -34,22 +38,23 @@ class Application
     public function __construct(array $options)
     {
         $this->configurators = ConfiguratorFactory::createFromDir($options["configuration_directory"]);
-        $this->commandBus = new CommandBus();
-        $this->register();
+        $this->commandBus = DeggolokCommandBusFactory::construct();
+        $this->queryBus = DeggolokQueryBusFactory::get();
     }
 
-    private function register()
-    {
-        $this->commandBus->register(SynchPlayerCommand::class, new SynchPlayerCommandHandler(
-            $this->configurators, new PlayerRepository()));
-        $this->commandBus->register(UpdateStatusCommand::class, new UpdateStatusCommandHandler(
-            $this->configurators, new PlayerRepository()));
-    }
 
     public function run()
     {
-        $this->commandBus->handle(new SynchPlayerCommand());
-        $this->commandBus->handle(new UpdateStatusCommand());
+        foreach ($this->configurators as $configurator) {
+            $playersApi = $this->queryBus->handle(new PlayersStateApiQuery($configurator->getSystem()));
+            if ($this->commandBus->handle(new SynchPlayerCommand($playersApi, $configurator->getSystem("universe")))) {
+                $this->commandBus->handle(new UpdatePlayerStatusCommand($playersApi, $configurator->getSystem("universe")));
+
+            }
+        }
+
+
+//        $bus->handle(new SynchPlayerCommand([], "d"));
 
 
     }

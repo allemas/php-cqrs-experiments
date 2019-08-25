@@ -13,6 +13,7 @@ namespace Deggolok\Application\Domain\Player\Entity;
 
 
 use Deggolok\Application\Domain\Player\ValueObject\Name;
+use Deggolok\Application\Domain\Player\ValueObject\PlayerApi;
 
 class Player
 {
@@ -36,15 +37,20 @@ class Player
      */
     public function getName()
     {
-        return array_values(array_slice($this->name, -1))[0];
+        if ($this->name) {
+            return array_values(array_slice($this->name, -1))[0];
+        }
+    }
+
+    public function getNames()
+    {
+        return $this->name;
     }
 
     public function setNames(array $names)
     {
         $this->name = $names;
     }
-
-
 
 
     public function setStatus($status)
@@ -87,5 +93,13 @@ class Player
         );
     }
 
+    public static function withValue(PlayerApi $playerApi)
+    {
+        $player = new Player($playerApi->ogameId);
+        $player->setNames([new Name($playerApi->name)]);
+        $player->setStatus($playerApi->status);
+        $player->setAliance($playerApi->aliance);
+        return $player;
+    }
 
 }

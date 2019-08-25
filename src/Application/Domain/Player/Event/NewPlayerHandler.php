@@ -13,27 +13,24 @@ namespace Deggolok\Application\Domain\Player\Event;
 
 
 use Deggolok\Application\Domain\Player\ValueObject\PlayerApi;
+use Deggolok\Bus\Event\EventHandlerInterface;
 use Deggolok\Bus\Event\EventInterface;
 
-class NewPlayer implements EventInterface
+class NewPlayerHandler implements EventHandlerInterface
 {
-    public $players = array();
 
-    public function addPlayer(PlayerApi $playerApi)
+    public function handle(EventInterface $event)
     {
-        $this->players[] = $playerApi;
+        $players = $event->players;
+        print "NEW players";
+        var_dump($players);
     }
 
-    static function withValues(array $players)
-    {
-        $event = new NewPlayer();
-        $event->players = $players;
-        return $event;
-    }
-
-
+    /**
+     * @return string
+     */
     public static function listenTo()
     {
-        // TODO: Implement listenTo() method.
+        return NewPlayer::class;
     }
 }

@@ -16,6 +16,7 @@ use Deggolok\Bus\Command\CommandInterface;
 
 interface CommandHandlerInterface
 {
-    public function handle(CommandInterface $command);
+    public function handle(CommandInterface $command): CommandResponse;
 
+    public function listenTo();
 }

@@ -1,7 +1,7 @@
 <?php
 
 /*
- * QueryHandlerInterface.php is part of ogame_deggolok.
+ * QueryResponseInterface.php is part of ogame_deggolok.
  *
  * (c) Allemand Sébastien <sebastien.a.consulting@gmail.com>
  *
@@ -12,9 +12,7 @@
 namespace Deggolok\Bus\Query;
 
 
-interface QueryHandlerInterface
+interface QueryResponseInterface
 {
-
-    public function handle(QueryInterface $command);
 
 }

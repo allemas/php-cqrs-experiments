@@ -1,7 +1,7 @@
 <?php
 
 /*
- * SynchPlayerCommand.php is part of ogame_deggolok.
+ * UpdatePlayerStatus.php is part of ogame_deggolok.
  *
  * (c) Allemand Sébastien <sebastien.a.consulting@gmail.com>
  *
@@ -11,17 +11,11 @@
 
 namespace Deggolok\Application\Domain\Player\Command;
 
+
 use Deggolok\Bus\Command\CommandInterface;
 
-/**
- * Class SynchPlayerCommand
- * Vérifie que tous les utilisateurs sont existant
- *
- * @package Deggolok\Application\Players\Command
- */
-class SynchPlayerCommand implements CommandInterface
+class UpdatePlayerStatusCommand implements CommandInterface
 {
-
     private $players = array();
     private $universe;
 
@@ -29,29 +23,23 @@ class SynchPlayerCommand implements CommandInterface
      * SynchPlayerCommand constructor.
      * @param array $playerList
      */
-    public function __construct(array $playerList, $from)
+    public function __construct(array $playerList, $universe)
     {
         $this->players = $playerList;
-        print $from;
-        $this->universe = $from;
+        $this->universe = $universe;
     }
-
-
-    /**
-     * @return array
-     */
-    public function getPlayers()
-    {
-        return $this->players;
-    }
-
-
-
 
     public function getUniverse()
     {
         return $this->universe;
     }
+
+
+    public function getPlayers()
+    {
+        return $this->players;
+    }
+
 
     public function __toString()
     {

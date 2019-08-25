@@ -33,12 +33,17 @@ class PlayerRepository extends DeggolokDatabaseManager implements PlayerReposito
     {
         $em = $this->getManager();
         $p = new \Deggolok\Infrastructure\Doctrine\Entity\Player($player->getId());
+        foreach ($player->getNames() as $name){
+            $p->addName(new Name($name));
+        }
 
-        $p->setName(new Name($player->getName()));
         $p->status = $player->getStatus();
         $p->highscore = [
             new Highscore()
         ];
+
+
+
 
         if ($options["label_universe"]) {
             $p->label_universe = $options["label_universe"];
@@ -58,8 +63,9 @@ class PlayerRepository extends DeggolokDatabaseManager implements PlayerReposito
 
             $doctrinePlayer = $em->getRepository(\Deggolok\Infrastructure\Doctrine\Entity\Player::class)
                 ->findOneBy(["ogameId" => $id, 'label_universe' => $universe]);
-            return PlayerViewModel::withValues($doctrinePlayer);
-
+            if ($doctrinePlayer) {
+                return PlayerViewModel::withValues($doctrinePlayer);
+            }
         }
         return null;
     }
